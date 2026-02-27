@@ -1,0 +1,77 @@
+diff --git a/lib/VM/CMakeLists.txt b/lib/VM/CMakeLists.txt
+index 29c23bb95..79e1cba80 100644
+--- a/lib/VM/CMakeLists.txt
++++ b/lib/VM/CMakeLists.txt
+@@ -78,6 +78,7 @@ set(source_files
+   StaticH.cpp
+   StaticHInit.cpp
+   StaticHUnit.cpp
++  PerfInstrumentation.cpp
+ 
+   JIT/DiscoverBB.cpp
+ 
+diff --git a/lib/VM/HostModel.cpp b/lib/VM/HostModel.cpp
+index fb118d560..e04a45d07 100644
+--- a/lib/VM/HostModel.cpp
++++ b/lib/VM/HostModel.cpp
+@@ -8,6 +8,7 @@
+ #include "hermes/VM/HostModel.h"
+ 
+ #include "hermes/VM/BuildMetadata.h"
++#include "PerfInstrumentation.h"
+ 
+ namespace hermes {
+ namespace vm {
+@@ -94,7 +95,9 @@ CallResult<HermesValue> FinalizableNativeFunction::createWithoutPrototype(
+   return selfHandle.getHermesValue();
+ }
+ 
+-HostObjectProxy::~HostObjectProxy() {}
++HostObjectProxy::~HostObjectProxy() {
++    g_vmPerfStats.hostObjectDestroyed++;
++}
+ 
+ const ObjectVTable HostObject::vt{
+     VTable(
+@@ -121,7 +124,7 @@ CallResult<HermesValue> HostObject::createWithoutPrototype(
+     Runtime &runtime,
+     std::unique_ptr<HostObjectProxy> proxy) {
+   auto parentHandle = Handle<JSObject>::vmcast(&runtime.objectPrototype);
+-
++  g_vmPerfStats.hostObjectCreated++;
+   HostObject *hostObj = runtime.makeAFixed<HostObject, HasFinalizer::Yes>(
+       runtime, parentHandle, runtime.hostObjectClass, std::move(proxy));
+ 
+diff --git a/lib/VM/Runtime.cpp b/lib/VM/Runtime.cpp
+index 927deee36..232c3e946 100644
+--- a/lib/VM/Runtime.cpp
++++ b/lib/VM/Runtime.cpp
+@@ -42,6 +42,7 @@
+ #include "hermes/VM/StackTracesTree.h"
+ #include "hermes/VM/StaticHUtils.h"
+ #include "hermes/VM/StringView.h"
++#include "PerfInstrumentation.h"
+ 
+ #ifdef HERMESVM_INTERNAL_JAVASCRIPT_NATIVE
+ #include "hermes/InternalJavaScript/internal_unit.h"
+@@ -2378,3 +2379,19 @@ void ScopedNativeDepthReducer::staticAsserts() {
+ } // namespace hermes
+ 
+ #undef DEBUG_TYPE
++
++jsi::Object HermesRuntime::getVMPerfStats(jsi::Runtime &rt) {
++  jsi::Object obj(rt);
++
++  obj.setProperty(rt, "hostObjectCreated",
++    (double)g_vmPerfStats.hostObjectCreated.load());
++
++  obj.setProperty(rt, "hostObjectDestroyed",
++    (double)g_vmPerfStats.hostObjectDestroyed.load());
++
++  obj.setProperty(rt, "hostObjectLive",
++    (double)(g_vmPerfStats.hostObjectCreated.load() -
++             g_vmPerfStats.hostObjectDestroyed.load()));
++
++  return obj;
++}
+\ No newline at end of file

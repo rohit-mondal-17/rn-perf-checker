@@ -1,0 +1,5 @@
+{
+    "scripts": {
+      "postinstall": "node hermes-patch/index.js"
+    }
+  }
