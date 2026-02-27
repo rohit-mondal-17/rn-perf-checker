@@ -65,3 +65,12 @@ android {
 dependencies {
   implementation "com.facebook.react:react-android"
 }
+
+// use patched hermes
+
+configurations.all {
+    resolutionStrategy.dependencySubstitution {
+        substitute module("com.facebook.react:hermes-engine")
+        using files("libs/hermes-engine.aar")
+    }
+}

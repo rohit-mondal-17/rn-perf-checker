@@ -1,5 +1,3 @@
-import RnPerfChecker from './NativeRnPerfChecker';
+import RNPerfChecker from './NativeRNPerfChecker';
 
-export function multiply(a: number, b: number): number {
-  return RnPerfChecker.multiply(a, b);
-}
+export default RNPerfChecker;

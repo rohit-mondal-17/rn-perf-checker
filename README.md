@@ -14,11 +14,12 @@ npm install rn-perf-checker
 
 
 ```js
-import { multiply } from 'rn-perf-checker';
+import RNPerfChecker from 'rn-perf-checker';
 
 // ...
 
-const result = multiply(3, 7);
+RNPerfChecker.startProfiling()
+RNPerfChecker.stopProfiling()
 ```
 
 
