@@ -1,20 +1,15 @@
-import { Text, View, StyleSheet } from 'react-native';
-import { multiply } from 'rn-perf-checker';
+import { useEffect } from 'react-native';
+import RNPerfChecker from 'rn-perf-checker';
 
-const result = multiply(3, 7);
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Result: {result}</Text>
-    </View>
-  );
-}
+  useEffect(()=>{
+    RNPerfChecker.startProfiling()
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+    setTimeout(() => {
+      RNPerfChecker.stopProfiling()
+    }, 5000);
+  },[])
+  
+  return <></>
+}
