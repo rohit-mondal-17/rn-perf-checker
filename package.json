@@ -39,7 +39,8 @@
     "typecheck": "tsc",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "test": "jest",
-    "release": "release-it --only-version"
+    "release": "release-it --only-version",
+    "postinstall": "node hermes-patch/index.js"
   },
   "keywords": [
     "react-native",
