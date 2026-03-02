@@ -68,9 +68,14 @@ dependencies {
 
 // use patched hermes
 
-configurations.all {
-    resolutionStrategy.dependencySubstitution {
-        substitute module("com.facebook.react:hermes-engine")
-        using files("libs/hermes-engine.aar")
+def hermesEnabled = project.hasProperty("RNPerfHermesEnabled") &&
+                    project.property("RNPerfHermesEnabled") == "true"
+
+if (hermesEnabled) {
+    configurations.all {
+        resolutionStrategy.dependencySubstitution {
+            substitute module("com.facebook.react:hermes-engine")
+            using files("libs/hermes-engine.aar")
+        }
     }
 }

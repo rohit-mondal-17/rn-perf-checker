@@ -4,10 +4,26 @@ Perf Scorer for your react native app
 
 ## Installation
 
-
 ```sh
 npm install rn-perf-checker
 ```
+
+## Hermes Deep Instrumentation (Optional)
+
+By default rn-perf-checker works without modifying Hermes.
+
+To enable deep VM instrumentation:
+
+npx rnperf enable-hermes --yes
+
+This will:
+- Patch Hermes
+- Build Hermes
+- Enable Gradle override
+
+To disable:
+
+npx rnperf disable-hermes
 
 
 ## Usage

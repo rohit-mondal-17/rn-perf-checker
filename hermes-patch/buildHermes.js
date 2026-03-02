@@ -17,7 +17,7 @@ async function buildHermes() {
   );
 
   const targetDir = path.resolve(
-    "node_modules/rnperf/android/libs"
+    "node_modules/rn-perf-checker/android/libs"
   );
 
   fs.mkdirSync(targetDir, { recursive: true });

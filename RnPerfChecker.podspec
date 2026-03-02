@@ -13,8 +13,15 @@ Pod::Spec.new do |s|
   s.platforms    = { :ios => min_ios_version_supported }
   s.source       = { :git => "https://github.com/rohit-mondal-17/rn-perf-checker.git", :tag => "#{s.version}" }
 
-  s.source_files = "ios/*.{h,m,mm,swift,cpp}"
+  if ENV['RNPERF_HERMES_ENABLED'] == 'true'
+    s.source_files = "ios/*.{h,m,mm,swift,cpp}"
+  else
+    s.source_files = "ios/RNPerfModule.swift"
+  end
+  
   s.private_header_files = "ios/*.h"
 
   install_modules_dependencies(s)
 end
+
+# RNPERF_HERMES_ENABLED=true pod install

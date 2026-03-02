@@ -4,7 +4,7 @@ const { run } = require("./utils");
 
 async function applyHermesPatch(rnVersion) {
   const hermesPath = path.resolve(
-    "node_modules/react-native/ReactAndroid/hermes-engine"
+    "react-native/ReactAndroid/hermes-engine"
   );
 
   if (!fs.existsSync(hermesPath)) {
