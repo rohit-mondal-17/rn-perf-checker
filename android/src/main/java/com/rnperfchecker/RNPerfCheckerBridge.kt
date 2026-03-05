@@ -34,7 +34,7 @@ object RNPerfCheckerBridge {
     val nativeHeap = MemoryMonitor.getNativeHeap()
     val javaHeap = MemoryMonitor.getJavaHeap()
     val hermesHeap = RNPerfCheckerJSI.getHermesHeap()
-    val hostObjects = RNPerfCheckerJSI.getHostObjectCount()
+    // val hostObjects = RNPerfCheckerJSI.getHostObjectCount()
 
     val fps = if (duration > 0) frames * 1000.0 / duration else 0.0
 
@@ -53,7 +53,7 @@ object RNPerfCheckerBridge {
     memory.putDouble("nativeHeapMB", nativeHeap / 1024.0 / 1024.0)
     memory.putDouble("javaHeapMB", javaHeap / 1024.0 / 1024.0)
     memory.putDouble("hermesHeapMB", hermesHeap / 1024.0 / 1024.0)
-    memory.putInt("hostObjectCount", hostObjects)
+    // memory.putInt("hostObjectCount", hostObjects)
 
     val fabric = Arguments.createMap()
     fabric.putDouble("avgCommitMs", avgCommitMs)

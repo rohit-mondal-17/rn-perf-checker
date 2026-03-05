@@ -1,39 +1,20 @@
-#include "PerfState.h"
+#include <jni.h>
 #include <jsi/jsi.h>
-#include <hermes/hermes.h>
+// #include <hermes/hermes.h>
+#include "PerfState.h"
 #include "HostObjectTracker.h"
-
 using namespace facebook;
 
+// Global perf state
 PerfState g_perfState;
 
+// Package: com.rnperfchecker
+// Class  : RNPerfCheckerJSI
+// Method : getHermesHeap() : double
 extern "C"
 JNIEXPORT jdouble JNICALL
-Java_com_rnperfchecker_RNPerfCheckerJSI_getHermesHeap(JNIEnv*, jobject) {
-  return (double)g_perfState.hermesHeap.load();
-}
-
-void updateHermesStats(jsi::Runtime& runtime) {
-  auto hermes = dynamic_cast<hermes::HermesRuntime*>(&runtime);
-  if (!hermes) return;
-
-  auto heap = hermes->getHeapInfo();
-  g_perfState.hermesHeap = heap.usedBytes;
-}
-
-class TrackedHostObject : public facebook::jsi::HostObject {
-public:
-  TrackedHostObject() {
-    HostObjectTracker::liveCount++;
-  }
-
-  ~TrackedHostObject() override {
-    HostObjectTracker::liveCount--;
-  }
-};
-
-extern "C"
-JNIEXPORT jint JNICALL
-Java_com_rnperfchecker_RNPerfCheckerJSI_getHostObjectCount(JNIEnv*, jobject) {
-  return HostObjectTracker::liveCount.load();
+Java_com_rnperfchecker_RNPerfCheckerJSI_getHermesHeap(JNIEnv* /*env*/, jobject /*thiz*/) {
+    // g_perfState.hermesHeap should be an atomic or a double you control
+    // Cast to jdouble is explicit and correct for JNI
+    return static_cast<jdouble>(g_perfState.hermesHeap.load());
 }

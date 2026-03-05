@@ -17,6 +17,7 @@ To enable deep VM instrumentation:
 npx rnperf enable-hermes --yes
 
 This will:
+
 - Patch Hermes
 - Build Hermes
 - Enable Gradle override
@@ -25,19 +26,17 @@ To disable:
 
 npx rnperf disable-hermes
 
-
 ## Usage
-
 
 ```js
 import RNPerfChecker from 'rn-perf-checker';
+import { RootTagContext, useContext } from 'react-native';
 
 // ...
-
-RNPerfChecker.startProfiling()
-RNPerfChecker.stopProfiling()
+const rootTag = useContext(RootTagContext);
+RNPerfChecker.startProfiling(rootTag);
+RNPerfChecker.stopProfiling();
 ```
-
 
 ## Contributing
 

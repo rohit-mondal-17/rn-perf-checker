@@ -1,6 +1,5 @@
 import type { TurboModule } from 'react-native';
 import { TurboModuleRegistry } from 'react-native';
-
 export type PerfReport = {
   score: number;
   js: {
@@ -17,13 +16,11 @@ export type PerfReport = {
     hostObjectCount: number;
   };
 };
-
 export interface Spec extends TurboModule {
-  startProfiling(): void;
+  startProfiling(surfaceIdFromJs?: number): void;
   stopProfiling(): Promise<PerfReport>;
   getCurrentMetrics(): PerfReport;
 }
-
 export default TurboModuleRegistry.getEnforcing<Spec>(
   'RNPerfChecker'
 );
