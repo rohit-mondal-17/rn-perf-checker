@@ -1,6 +1,8 @@
 package com.rnperfchecker
 
 import com.facebook.react.*
+import com.facebook.react.bridge.NativeModule
+import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.module.model.ReactModuleInfo
 import com.facebook.react.module.model.ReactModuleInfoProvider
 
